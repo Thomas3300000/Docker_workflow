@@ -5,12 +5,10 @@ on:
     branches:
       - main
 
-
 jobs:
   build:
     runs-on: ubuntu-latest
      
-
     steps:
     - name: Check out the repo
       uses: actions/checkout@v2
@@ -26,11 +24,11 @@ jobs:
         password: ${{ secrets.CR_PAT }}
 
     - name: Convert actor to lowercase
-      id: vars
-      run: echo "actor_lowercase=${GITHUB_ACTOR,,}" >> $GITHUB_ENV
+      id: convert
+      run: echo "actor_lowercase=${{ github.actor }}" | tr '[:upper:]' '[:lower:]' >> $GITHUB_ENV
           
     - name: Build and push Docker image
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: ghcr.io/${{ env.actor_lowercase }}/docker_workflow:latest
+        tags: ghcr.io/$Thomas3300000/docker_workflow:latest
