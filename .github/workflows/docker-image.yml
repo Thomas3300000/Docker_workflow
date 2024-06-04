@@ -24,9 +24,13 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.CR_PAT }}
+
+    - name: Convert actor to lowercase
+      id: vars
+      run: echo "actor_lowercase=$(echo '${{ github.actor }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
           
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
       with:
         push: true
-        tags: ghcr.io/Thomas3300000/docker_workflow:latest
+        tags: ghcr.io/${{ env.actor_lowercase }}/docker_workflow:latest
