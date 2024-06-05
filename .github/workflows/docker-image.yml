@@ -12,7 +12,7 @@ jobs:
      
 
     steps:
-    - name: Check out the repo
+    - name: Check out your repository
       uses: actions/checkout@v2
 
     - name: Set up Docker Buildx
@@ -25,12 +25,12 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.CR_PAT }}
 
-    - name: Convert actor to lowercase
-      id: vars
-      run: echo "actor_lowercase=$(echo '${{ github.actor }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
-          
+    - name: downcase REPO
+      run: |
+        echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+
     - name: Build and push Docker image
       uses: docker/build-push-action@v5
       with:
         push: true
-        tags: ghcr.io/${{ env.actor_lowercase }}/docker_workflow:latest
+        tags: ghcr.io/${{ env.REPO }}:latests
